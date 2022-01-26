@@ -13,6 +13,14 @@ class UserG(MethodView):
         tel = body.get("tel")
         password = body.get("password")
 
+        user = User.query.filter_by(email=email).first()
+        if user:
+            return {"code_status": "User already exists"}, 400
+        
+        user = User.query.filter_by(cpf=cpf).first()
+        if user:
+            return {"code_status": "User already exists"}, 400
+
         if isinstance(nome, str) and isinstance(email, str) and isinstance(cpf, str) and isinstance(tel, str) and isinstance(password, str):
             user = User(nome=nome, email=email, cpf=cpf, tel=tel, password=password)
             user.save()
@@ -42,6 +50,14 @@ class UserId(MethodView):
         tel = body.get("tel")
         password = body.get("password")
 
+        user2 = User.query.filter_by(email=email).first()
+        if user2:
+            return {"code_status": "Email already in use"}, 400
+        
+        user2 = User.query.filter_by(cpf=cpf).first()
+        if user2:
+            return {"code_status": "Data already used"}, 400
+
         if isinstance(nome, str) and isinstance(email, str) and isinstance(cpf, str) and isinstance(tel, str) and isinstance(password, str):
             user = User.query.get_or_404(id)
             user.nome = nome
@@ -64,6 +80,14 @@ class UserId(MethodView):
         cpf = body.get("cpf", user.cpf)
         tel = body.get("tel", user.tel)
         password = body.get("password", user.password)
+
+        user2 = User.query.filter_by(email=email).first()
+        if user.id != user2.id:
+            return {"code_status": "Email already in use"}, 400
+        
+        user2 = User.query.filter_by(cpf=cpf).first()
+        if user.id != user2.id:
+            return {"code_status": "Data already used"}, 400
 
         if isinstance(nome, str) and isinstance(email, str) and isinstance(cpf, str) and isinstance(tel, str) and isinstance(password, str):
             user.nome = nome

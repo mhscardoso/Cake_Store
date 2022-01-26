@@ -10,14 +10,16 @@ class User(BaseModel):
     email = db.Column(db.String(50), unique = True, index = True)
     cpf = db.Column(db.String(11), unique = True)
     tel = db.Column(db.String(11))
+    endereco = db.Column(db.String(100))
     password = db.Column(db.String(64))
 
-    user_product = db.relationship("Produto", backref="user")
+    user_product = db.relationship("Cart", backref="user", uselist=False)
 
     def json(self):
         return {
             "nome": self.nome,
             "email": self.email,
             "cpf": self.cpf,
-            "tel": self.tel
+            "tel": self.tel,
+            "endereço": self.endereco
         }
