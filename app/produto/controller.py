@@ -38,12 +38,14 @@ class ProdutoId(MethodView):
         cod = body.get("codigo")
         preco = body.get("preco")
         pedido = body.get("pedido")
+        user_id = body.get("user_id")
 
-        if isinstance(cod, str) and isinstance(preco, float) and isinstance(pedido, bool):
+        if isinstance(cod, str) and isinstance(preco, float) and isinstance(pedido, bool) and (isinstance(user_id, int) or user_id == None):
             produto = Produto.query.get_or_404(id)
             produto.cod = cod
             produto.preco = preco
             produto.pedido = pedido
+            produto.user_id = user_id
             produto.update()
             return produto.json(), 200
         return {"code_status": "Invalid data in request"}, 400
@@ -55,12 +57,14 @@ class ProdutoId(MethodView):
         cod = body.get("codigo", self.cod)
         preco = body.get("preco", self.preco)
         pedido = body.get("pedido", self.pedido)
+        user_id = body.get("user_id", self.user_id)
 
-        if isinstance(cod, str) and isinstance(preco, float) and isinstance(pedido, bool):
+        if isinstance(cod, str) and isinstance(preco, float) and isinstance(pedido, bool) and (isinstance(user_id, int) or user_id == None):
             produto = Produto.query.get_or_404(id)
             produto.cod = cod
             produto.preco = preco
             produto.pedido = pedido
+            produto.user_id = user_id
             produto.update()
             return produto.json(), 200
         return {"code_status": "Invalid data in request"}, 400
